@@ -11,7 +11,7 @@ switch (process.env.ENVIRONMENT) {
         }
         break;
     case "test":
-        mongoDatabase = new MongoMemoryServer()
+        mongoDatabase = new MongoMemoryServer({ binary: { version: '4.4.1' } })
         break;
     case "production":
     case "staging":
@@ -33,10 +33,11 @@ async function connect() {
 }
 
 async function disconnect() {
+    await mongoose.disconnect()
     if (process.env.ENVIRONMENT == "test" || process.env.ENVIRONMENT == "develop") {
         await mongoDatabase.stop()
     }
-    await mongoose.disconnect()
+
 }
 
 module.exports = {
