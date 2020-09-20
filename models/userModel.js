@@ -1,18 +1,19 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs")
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
-    email: String,
-    password: String,
-    name: String,
-    role: String,
-    adress: {
-        street: String,
-        zip: String,
-        city: String
-    },
-    orderHistory: Array
-})
+	email: String,
+	password: String,
+	name: String,
+	role: String,
+	adress: {
+		street: String,
+		zip: String,
+		city: String,
+	},
+	orderHistory: Array,
+});
 
 /**
  {
@@ -31,31 +32,42 @@ const userSchema = new mongoose.Schema({
 } 
  */
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
-exports.login = async () => {
+exports.login = async (email, password) => {
+	const doc = await User.findOne({ email: email });
+	if (!doc) return { message: 'Email not found' };
 
-}
+	const success = bcrypt.compareSync(password, doc.password);
+	if (!success) return { message: 'Password not correct' };
+
+	const token = jwt.sign(
+		{ email: doc.email, name: doc.name, userId: doc._id, role: doc.role },
+		process.env.SECRET,
+		{
+			expiresIn: '1h',
+		}
+	);
+	return token;
+};
 
 exports.signup = async (person) => {
-    const user = {
-        email: person.email,
-        password: bcrypt.hashSync(person.password, 10),
-        name: person.name,
-        role: person.role,
-        adress: {
-            street: person.adress.street,
-            zip: person.adress.zip,
-            city: person.adress.city
-        }
-    }
+	const user = {
+		email: person.email,
+		password: bcrypt.hashSync(person.password, 10),
+		name: person.name,
+		role: person.role,
+		adress: {
+			street: person.adress.street,
+			zip: person.adress.zip,
+			city: person.adress.city,
+		},
+	};
 
-    const userToSave = new User(user);
-    const response = await userToSave.save();
-    //console.log('response', response)
-    return response;
-}
+	const userToSave = new User(user);
+	const response = await userToSave.save();
+	//console.log('response', response)
+	return response;
+};
 
-exports.getInfo = async () => {
-
-}
+exports.getInfo = async () => {};
