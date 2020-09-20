@@ -1,3 +1,4 @@
+require('dotenv').config();
 const User = require('../models/userModel');
 
 exports.authenticate = async (req, res, next) => {
