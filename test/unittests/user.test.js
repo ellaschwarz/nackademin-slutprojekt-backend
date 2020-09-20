@@ -89,10 +89,16 @@ describe('User model', async function () {
 	it('Should return verify token and return signature', async function () {
 		const login = await userModel.login('pepito@mail.com', '12345');
 		const user = await userModel.verifyToken(login, process.env.SECRET);
-		console.log(user);
-		// expect(user).to.be.a('object');
-		// expect(user).to.deep.include({
-		// 	message: 'Password not correct',
-		// });
+		expect(user).to.be.a('object');
+		expect(user).to.deep.include({
+			email: 'pepito@mail.com',
+			name: 'Pepito Perez',
+			role: 'customer',
+			adress: {
+				street: 'Corazongatan 3',
+				zip: '123 56',
+				city: 'SuperCity',
+			},
+		});
 	});
 });

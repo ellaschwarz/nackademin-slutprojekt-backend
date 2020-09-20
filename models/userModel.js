@@ -34,23 +34,6 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-exports.login = async (email, password) => {
-	const doc = await User.findOne({ email: email });
-	if (!doc) return { message: 'Email not found' };
-
-	const success = bcrypt.compareSync(password, doc.password);
-	if (!success) return { message: 'Password not correct' };
-
-	const token = jwt.sign(
-		{ email: doc.email, name: doc.name, userId: doc._id, role: doc.role },
-		process.env.SECRET,
-		{
-			expiresIn: '1h',
-		}
-	);
-	return token;
-};
-
 exports.signup = async (person) => {
 	const user = {
 		email: person.email,
@@ -68,6 +51,23 @@ exports.signup = async (person) => {
 	const response = await userToSave.save();
 	//console.log('response', response)
 	return response;
+};
+
+exports.login = async (email, password) => {
+	const doc = await User.findOne({ email: email });
+	if (!doc) return { message: 'Email not found' };
+
+	const success = bcrypt.compareSync(password, doc.password);
+	if (!success) return { message: 'Password not correct' };
+
+	const token = jwt.sign(
+		{ email: doc.email, name: doc.name, userId: doc._id, role: doc.role, adress: doc.adress },
+		process.env.SECRET,
+		{
+			expiresIn: '1h',
+		}
+	);
+	return token;
 };
 
 exports.verifyToken = async (token, secret) => {
