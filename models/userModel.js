@@ -70,4 +70,9 @@ exports.signup = async (person) => {
 	return response;
 };
 
+exports.verifyToken = async (token, secret) => {
+	const validToken = await jwt.verify(token, secret);
+	return validToken;
+};
+
 exports.getInfo = async () => {};

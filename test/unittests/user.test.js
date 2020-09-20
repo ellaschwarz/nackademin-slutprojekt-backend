@@ -1,3 +1,4 @@
+require('dotenv').config();
 const chai = require('chai');
 const { expect } = require('chai');
 
@@ -83,5 +84,15 @@ describe('User model', async function () {
 		expect(wrongPw).to.deep.include({
 			message: 'Password not correct',
 		});
+	});
+
+	it('Should return verify token and return signature', async function () {
+		const login = await userModel.login('pepito@mail.com', '12345');
+		const user = await userModel.verifyToken(login, process.env.SECRET);
+		console.log(user);
+		// expect(user).to.be.a('object');
+		// expect(user).to.deep.include({
+		// 	message: 'Password not correct',
+		// });
 	});
 });
