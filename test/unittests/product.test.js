@@ -24,7 +24,7 @@ describe("test", () => {
     it("should create a product", async function () {
         try {
             const product = await productModel.createProduct();
-            console.log(product);
+            //console.log(product);
             //expect(product).to.be.a("Object");
             expect(product).to.include({ title: "test", price: 1, shortDesc: "lorem", longDesc: "lorem Ipsum", imgFile: "blabla " });
         } catch (error) {

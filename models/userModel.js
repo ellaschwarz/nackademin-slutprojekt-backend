@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs")
 
 const userSchema = new mongoose.Schema({
     email: String,
@@ -36,8 +37,23 @@ exports.login = async () => {
 
 }
 
-exports.signup = async () => {
+exports.signup = async (person) => {
+    const user = {
+        email: person.email,
+        password: bcrypt.hashSync(person.password, 10),
+        name: person.name,
+        role: person.role,
+        adress: {
+            street: person.adress.street,
+            zip: person.adress.zip,
+            city: person.adress.city
+        }
+    }
 
+    const userToSave = new User(user);
+    const response = await userToSave.save();
+    //console.log('response', response)
+    return response;
 }
 
 exports.getInfo = async () => {

@@ -6,6 +6,7 @@ const orderRoutes = require("./routes/orderRoutes");
 const productRoutes = require("./routes/productRoutes");
 const userRoutes = require("./routes/userRoutes");
 
+app.use(express.json())
 app.use(express.static('public'));
 
 app.use("/api/orders", orderRoutes);
