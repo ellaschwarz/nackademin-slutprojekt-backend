@@ -80,7 +80,7 @@ describe('Integration for User', function () {
 			.set('Content-Type', 'application/json')
 			.send(body)
 			.then((res) => {
-				expect(res).to.have.status(201);
+				expect(res).to.have.status(200);
 				expect(res.body).to.be.a('string');
 			});
 	});
@@ -96,9 +96,29 @@ describe('Integration for User', function () {
 			.set('Content-Type', 'application/json')
 			.send(body)
 			.then((res) => {
+				expect(res).to.have.status(200);
 				expect(res.body).to.be.a('object');
 				expect(res.body).to.deep.include({
 					message: 'Email not found',
+				});
+			});
+	});
+
+	it('POST /api/auth should return password not correct', async function () {
+		const body = {
+			email: 'pepito@mail.com',
+			password: '321',
+		};
+
+		await request(app)
+			.post('/api/auth')
+			.set('Content-Type', 'application/json')
+			.send(body)
+			.then((res) => {
+				expect(res).to.have.status(200);
+				expect(res.body).to.be.a('object');
+				expect(res.body).to.deep.include({
+					message: 'Password not correct',
 				});
 			});
 	});
