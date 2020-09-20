@@ -28,7 +28,7 @@ describe('Integration for User', function () {
 		}
 	});
 
-	it('POST /api/register should create a user', async function () {
+	it('POST /api/register should create a user', async () => {
 		const person = {
 			email: 'pepito@mail.com',
 			password: '12345',
