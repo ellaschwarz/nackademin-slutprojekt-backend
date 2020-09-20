@@ -23,9 +23,7 @@ exports.signup = async (req, res) => {
 	}
 };
 
-exports.login = async (req, res) => {
-	//userModel.login()
-};
+exports.login = async (req, res) => {};
 
 exports.getInfo = async (req, res) => {
 	//userModel.getInfo()
