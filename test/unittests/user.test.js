@@ -44,6 +44,7 @@ describe('User model', async function () {
         expect(user._doc).to.include.all.keys(["_id", "email", "password", "name", "role", "adress", "orderHistory"]);
         expect(user.adress).to.have.all.keys(["street", "zip", "city"]);
         expect(user._doc).to.deep.include({ email: "pepito@mail.com", name: "Pepito Perez", role: "customer" })
+        expect(user._doc.adress).to.deep.include({ street: "Corazongatan 3", zip: "123 56", city: "SuperCity" }) 
         expect(user.password).to.not.equal("12345")
 
     })
