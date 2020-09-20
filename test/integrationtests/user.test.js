@@ -16,8 +16,8 @@ describe('Integration for User', function () {
 		}
 	});
 
-	beforeEach(async () => {
-		// Clear database
+	beforeEach(async function () {
+		// await userModel.clear();
 	});
 
 	after(async () => {
@@ -28,7 +28,7 @@ describe('Integration for User', function () {
 		}
 	});
 
-	it('POST /api/register should create a user', async () => {
+	it('POST /api/register should create a user', async function () {
 		const person = {
 			email: 'pepito@mail.com',
 			password: '12345',
@@ -41,7 +41,6 @@ describe('Integration for User', function () {
 			},
 		};
 		const userToRegister = await userModel.signup(person);
-
 		const resp = await request(app)
 			.post('/api/register')
 			.set('Content-Type', 'application/json')
@@ -70,19 +69,37 @@ describe('Integration for User', function () {
 		expect(resp.password).to.not.equal('12345');
 	});
 
-	it('POST /api/auth should login a user', async () => {
+	it('POST /api/auth should login a user', async function () {
 		const body = {
-			email: 'pepito@gmail.com',
+			email: 'pepito@mail.com',
 			password: '12345',
 		};
 
 		await request(app)
-			.post('/api/register')
+			.post('/api/auth')
 			.set('Content-Type', 'application/json')
 			.send(body)
 			.then((res) => {
-				expect(res).to.be.json;
 				expect(res).to.have.status(201);
+				expect(res.body).to.be.a('string');
+			});
+	});
+
+	it('POST /api/auth should return wrong email', async function () {
+		const body = {
+			email: 'pep@mail.com',
+			password: '12345',
+		};
+
+		await request(app)
+			.post('/api/auth')
+			.set('Content-Type', 'application/json')
+			.send(body)
+			.then((res) => {
+				expect(res.body).to.be.a('object');
+				expect(res.body).to.deep.include({
+					message: 'Email not found',
+				});
 			});
 	});
 });

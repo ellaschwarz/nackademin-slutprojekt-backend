@@ -76,3 +76,8 @@ exports.verifyToken = async (token, secret) => {
 };
 
 exports.getInfo = async () => {};
+
+exports.clear = async () => {
+	const doc = await User.deleteMany({}, { multi: true });
+	return doc;
+};

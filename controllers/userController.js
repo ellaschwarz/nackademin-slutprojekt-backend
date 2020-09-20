@@ -23,7 +23,16 @@ exports.signup = async (req, res) => {
 	}
 };
 
-exports.login = async (req, res) => {};
+exports.login = async (req, res) => {
+	const { email, password } = req.body;
+	try {
+		const doc = await userModel.login(email, password);
+		res.status(201).json(doc);
+	} catch (error) {
+		console.log(error);
+		res.status(401).send({ message: error.toString() });
+	}
+};
 
 exports.getInfo = async (req, res) => {
 	//userModel.getInfo()
