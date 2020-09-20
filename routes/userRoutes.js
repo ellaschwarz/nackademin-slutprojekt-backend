@@ -9,6 +9,10 @@ router.post("/auth", userController.login);
 router.post("/register", userController.signup);
 
 //get user information
+// We probably won't need this endpoint
+// On the README.md on "Auth End-Point Response"
+// seems that all the user information is sended to
+// the frontend whe he/she logs in. (Johan)
 router.get("/me", userController.getInfo);
 
 module.exports = router
