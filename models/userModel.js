@@ -44,14 +44,15 @@ exports.signup = async (person) => {
         name: person.name,
         role: person.role,
         adress: {
-            street: person.street,
-            zip: person.zip,
-            city: person.city
+            street: person.adress.street,
+            zip: person.adress.zip,
+            city: person.adress.city
         }
     }
 
     const userToSave = new User(user);
     const response = await userToSave.save();
+    //console.log('response', response)
     return response;
 }
 
