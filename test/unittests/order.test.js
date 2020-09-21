@@ -24,7 +24,6 @@ describe("Testing order models", () => {
         }
 
         const newOrder = await orderModel.createOrder(order);
-        console.log(newOrder._doc);
         expect(newOrder).to.be.an('object')
         expect(newOrder).to.deep.include({'items': order.items, 'orderValue': order.orderValue});
         expect(newOrder.items).to.have.lengthOf(order.items.length);

@@ -8,7 +8,7 @@ const app = require('../../app');
 
 const { expect, request } = require('chai');
 
-describe('Integration for Order', function () {
+describe.only('Integration for Order', function () {
 	before(async () => {
 		try {
 			await Database.connect();
@@ -20,25 +20,10 @@ describe('Integration for Order', function () {
 	beforeEach(async function () {
 		await userModel.clear();
 		//await orderModel.clear();
-		const person = {
-			email: 'pepito@mail.com',
-			password: '12345',
-			name: 'Pepito Perez',
-			role: 'customer',
-			adress: {
-				street: 'Corazongatan 3',
-				zip: '123 56',
-				city: 'SuperCity',
-			},
-		};
 
-		await userModel.signup(person);
-
-		const login = await userModel.login('pepito@mail.com', '12345');
-		this.currentTest.token = login.token;
-		this.currentTest.user = login.user;
-		console.log(this.currentTest.user);
-		console.log(this.currentTest.token);
+        
+		// console.log(this.currentTest.user);
+		// console.log(this.currentTest.token);
 	});
 
 	after(async () => {
@@ -53,13 +38,30 @@ describe('Integration for Order', function () {
 		const body = {
 			items: [3, 5, 1],
 			orderValue: 399,
+        };
+        
+        const person = {
+			email: 'pepito@mail.com',
+			password: '12345',
+			name: 'Pepito Perez',
+			role: 'customer',
+			adress: {
+				street: 'Corazongatan 3',
+				zip: '123 56',
+				city: 'SuperCity',
+			},
 		};
+
+		await userModel.signup(person);
+        const login = await userModel.login('pepito@mail.com', '12345');
+        
 
 		await request(app)
 			.post('/api/orders')
-			.set('Authorization', `Bearer ${this.test.token}`)
+			.set('Authorization', 'Bearer ' + login.token)
 			.send(body)
 			.then((res) => {
+                console.log(res.body)
 				//console.log(res.body);
 			});
     });
