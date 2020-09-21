@@ -39,7 +39,7 @@ exports.signup = async (person) => {
 		email: person.email,
 		password: bcrypt.hashSync(person.password, 10),
 		name: person.name,
-		role: person.role,
+		role: 'customer',
 		adress: {
 			street: person.adress.street,
 			zip: person.adress.zip,
@@ -54,6 +54,8 @@ exports.signup = async (person) => {
 };
 
 exports.login = async (email, password) => {
+	console.log(email);
+	console.log(password);
 	const doc = await User.findOne({ email: email });
 	if (!doc) return { message: 'Email not found' };
 
@@ -67,7 +69,7 @@ exports.login = async (email, password) => {
 			expiresIn: '1h',
 		}
 	);
-	return token;
+	return { token: token, user: doc };
 };
 
 exports.verifyToken = async (token, secret) => {
