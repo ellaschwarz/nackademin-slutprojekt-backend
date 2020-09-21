@@ -49,7 +49,7 @@ describe('Integration for Order', function () {
 		}
 	});
 
-	it('POST /api/orders should create a order', async function () {
+	it('POST /api/orders should create a order with authenticated user', async function () {
 		const body = {
 			items: [3, 5, 1],
 			orderValue: 399,
@@ -58,6 +58,21 @@ describe('Integration for Order', function () {
 		await request(app)
 			.post('/api/orders')
 			.set('Authorization', `Bearer ${this.test.token}`)
+			.send(body)
+			.then((res) => {
+				//console.log(res.body);
+			});
+    });
+    
+    it('POST /api/orders should create a order with anonymous user', async function () {
+		const body = {
+			items: [3, 5, 1],
+			orderValue: 399,
+		};
+
+		await request(app)
+			.post('/api/orders')
+			.set('Content-Type', 'application/json')
 			.send(body)
 			.then((res) => {
 				//console.log(res.body);
