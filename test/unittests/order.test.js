@@ -18,13 +18,16 @@ describe("Testing order models", () => {
     });
 
     it("should create a new order", async function () {
-            let items = [4, 56, 77]
-            let orderValue = 399
-        
+        let order = {
+            items: [4,56,77],
+            orderValue: 399
+        }
 
-        const newOrder = await orderModel.createOrder(items, orderValue);
-        newOrder.should.have.property('items');
-        //expect(true).to.equal(true);
-
+        const newOrder = await orderModel.createOrder(order);
+        console.log(newOrder._doc);
+        expect(newOrder).to.be.an('object')
+        expect(newOrder).to.deep.include({'items': order.items, 'orderValue': order.orderValue});
+        expect(newOrder.items).to.have.lengthOf(order.items.length);
+        expect(newOrder.orderValue).to.be.equal(order.orderValue);
     });
 })

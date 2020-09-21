@@ -16,14 +16,19 @@ const Order = mongoose.model('Order', orderSchema);
     orderValue: 999
 }  */
 
-exports.createOrder = async (items, orderValue) => {
+exports.createOrder = async (order) => {
 	const doc = await Order.create({
 		timestamp: new Date(),
 		status: 'inProcess',
-		items,
-		orderValue
+		items: order.items,
+		orderValue: order.orderValue
 	});
 	return doc;
 };
+
+exports.clear = async () => {
+    const doc = await Order.deleteMany({});
+    return doc;
+}
 
 exports.getOrders = async () => {};
