@@ -1,11 +1,12 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+chai.use(chaiHttp);
+
 const { expect, request } = require('chai');
 
 const Database = require('../../database/database');
 const userModel = require('../../models/userModel');
 const app = require('../../app');
-chai.use(chaiHttp);
 
 describe('Integration for User', function () {
 	before(async () => {
