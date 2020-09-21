@@ -29,6 +29,19 @@ describe('Integration for Order', function () {
 	});
 
 	it('POST /api/orders should create a order', async function () {
-		console.log('hehe');
+		let body = {
+			items: [4, 56, 77],
+			orderValue: 399,
+		};
+
+		await request(app)
+			.post('/api/orders')
+			.set('Content-Type', 'application/json')
+			.send(body)
+			.then((res) => {
+				console.log(res.body);
+				// expect(res).to.have.status(200);
+				// expect(res.body).to.be.a('object');
+			});
 	});
 });
