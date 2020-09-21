@@ -3,7 +3,9 @@ const orderModel = require('../models/orderModel');
 
 exports.createOrder = async (req, res) => {
 	//orderModel.createOrder()
-
+    //Check if user is logged in or not 
+    //if logged in --> Add order to user.orderHistory
+    //Annars behöver man inte lägga till det 
 	const { items, orderValue } = req.body;
 	try {
 		const order = await orderModel.createOrder(items, orderValue);
