@@ -15,8 +15,9 @@ exports.signup = async (req, res) => {
 	};
 
 	try {
-		const response = await userModel.signup(userToCreate);
-		res.status(201).send(response);
+		await userModel.signup(userToCreate);
+		const doc = await userModel.login(req.body.email, req.body.password);
+		res.status(201).json(doc);
 	} catch (error) {
 		console.error(error);
 		res.status(400).send({ message: error.toString() });

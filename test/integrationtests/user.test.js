@@ -44,10 +44,10 @@ describe('Integration for User', function () {
 		const resp = await request(app)
 			.post('/api/register')
 			.set('Content-Type', 'application/json')
-			.send(userToRegister);
+			.send(person);
 		expect(resp).to.be.json;
 		expect(resp).to.have.status(201);
-		expect(resp.body).to.include.keys([
+		expect(resp.body.user).to.include.keys([
 			'_id',
 			'email',
 			'password',
@@ -56,17 +56,17 @@ describe('Integration for User', function () {
 			'adress',
 			'orderHistory',
 		]);
-		expect(resp.body).to.deep.include({
+		expect(resp.body.user).to.include({
 			email: 'pepito@mail.com',
 			name: 'Pepito Perez',
 			role: 'customer',
 		});
-		expect(resp.body.adress).to.deep.include({
+		expect(resp.body.user.adress).to.include({
 			street: 'Corazongatan 3',
 			zip: '123 56',
 			city: 'SuperCity',
 		});
-		expect(resp.password).to.not.equal('12345');
+		expect(resp.body.user.password).to.not.equal('12345');
 	});
 
 	it('POST /api/auth should login a user', async function () {
@@ -81,7 +81,7 @@ describe('Integration for User', function () {
 			.send(body)
 			.then((res) => {
 				expect(res).to.have.status(200);
-				expect(res.body).to.be.a('string');
+				expect(res.body.token).to.be.a('string');
 			});
 	});
 
@@ -98,7 +98,7 @@ describe('Integration for User', function () {
 			.then((res) => {
 				expect(res).to.have.status(200);
 				expect(res.body).to.be.a('object');
-				expect(res.body).to.deep.include({
+				expect(res.body).to.include({
 					message: 'Email not found',
 				});
 			});
@@ -117,7 +117,7 @@ describe('Integration for User', function () {
 			.then((res) => {
 				expect(res).to.have.status(200);
 				expect(res.body).to.be.a('object');
-				expect(res.body).to.deep.include({
+				expect(res.body).to.include({
 					message: 'Password not correct',
 				});
 			});

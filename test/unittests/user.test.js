@@ -67,7 +67,7 @@ describe('User model', async function () {
 
 	it('Should login a user and sign a JWT token', async function () {
 		const login = await userModel.login('pepito@mail.com', '12345');
-		expect(login).to.be.a('string');
+		expect(login).to.be.a('object');
 	});
 
 	it('Should return message: Email not found', async function () {
@@ -88,7 +88,7 @@ describe('User model', async function () {
 
 	it('Should return verify token and return signature', async function () {
 		const login = await userModel.login('pepito@mail.com', '12345');
-		const user = await userModel.verifyToken(login, process.env.SECRET);
+		const user = await userModel.verifyToken(login.token, process.env.SECRET);
 		expect(user).to.be.a('object');
 		expect(user).to.deep.include({
 			email: 'pepito@mail.com',
