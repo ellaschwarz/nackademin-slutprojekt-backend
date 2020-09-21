@@ -22,3 +22,14 @@ exports.authenticate = async (req, res, next) => {
 		return res.status(403).json(error);
 	}
 };
+
+exports.anonymous = async (req, res, next) => {
+	try {
+		const token = req.headers.authorization.replace('Bearer ', '');
+		const payload = await User.verifyToken(token, process.env.SECRET);
+		req.user = payload;
+		next();
+	} catch (error) {
+		next();
+	}
+};
