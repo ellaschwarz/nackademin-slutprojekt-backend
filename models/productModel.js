@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const products = require("../database/products.json");
 
 const productSchema = new mongoose.Schema({
     title: String,
@@ -18,6 +19,12 @@ const Product = mongoose.model("Product", productSchema);
     longDesc: 'Skate ipsum dolor sit amet...',
     imgFile: 'skateboard-greta.png'
 } */
+
+exports.init = async () => {
+    products.forEach(async product => {
+        await Product.create(product);
+    })
+}
 
 exports.createProduct = async (prod) => {
     const product = await Product.create(prod)

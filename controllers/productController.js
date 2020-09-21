@@ -3,7 +3,14 @@ const productModel = require("../models/productModel");
 
 exports.createProduct = async (req, res) => {
     try {
-        const product = await productModel.createProduct(req.body);
+        const test = {
+            title: req.body.title,
+            price: req.body.price,
+            shortDesc: req.body.shortDesc,
+            longDesc: req.body.longDesc,
+            imgFile: req.body.imgFile
+        }
+        const product = await productModel.createProduct(test);
         res.status(201).send(product);
     } catch (error) {
         res.status(400).send({ message: error.message });

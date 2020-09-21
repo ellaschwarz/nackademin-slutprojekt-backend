@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const productModel = require("../models/productModel");
 const { MongoMemoryServer } = require('mongodb-memory-server');
 require('dotenv').config();
 
@@ -32,6 +33,8 @@ async function connect() {
 		useFindAndModify: false,
 		useCreateIndex: true,
 	});
+
+	//await productModel.init();
 }
 
 async function disconnect() {

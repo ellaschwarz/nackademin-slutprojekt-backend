@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const orderModel = require("../models/orderModel");
 
 const userSchema = new mongoose.Schema({
 	email: String,
@@ -75,7 +76,9 @@ exports.verifyToken = async (token, secret) => {
 	return validToken;
 };
 
-exports.getInfo = async () => { };
+exports.getInfo = async () => {
+
+};
 
 exports.clear = async () => {
 	const doc = await User.deleteMany({}, { multi: true });
@@ -83,12 +86,19 @@ exports.clear = async () => {
 };
 
 exports.updateOrderHistory = async (id, order) => {
-	const doc = await User.findOneAndUpdate({_id: id}, {
+	const doc = await User.findOneAndUpdate({ _id: id }, {
 		$push: {
 			orderHistory: order
 		},
-		},
-		{new: true}
+	},
+		{ new: true }
 	);
 	return doc;
+};
+
+
+exports.getOrderHistory = async (id) => {
+	console.log(id);
+	const user = await User.findById(id);
+	return user.orderHistory;
 };

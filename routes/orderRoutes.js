@@ -4,7 +4,7 @@ const orderController = require("../controllers/orderController");
 const auth = require('../middleware/auth')
 
 //get all orders (admin/customer)
-router.get("/", orderController.getOrders);
+router.get("/", auth.authenticate, orderController.getOrders);
 
 //Post new order
 router.post("/", auth.anonymous, orderController.createOrder);

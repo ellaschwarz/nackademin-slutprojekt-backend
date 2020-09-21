@@ -9,11 +9,11 @@ const orderSchema = new mongoose.Schema({
 
 const Order = mongoose.model('Order', orderSchema);
 /* {
-    _id: 123,
-    timeStamp: Date.now(),
-    status: 'inProcess',
-    items: [ <productId1>, <productId2>, ... ],
-    orderValue: 999
+	_id: 123,
+	timeStamp: Date.now(),
+	status: 'inProcess',
+	items: [ <productId1>, <productId2>, ... ],
+	orderValue: 999
 }  */
 
 exports.createOrder = async (order) => {
@@ -27,8 +27,21 @@ exports.createOrder = async (order) => {
 };
 
 exports.clear = async () => {
-    const doc = await Order.deleteMany({});
-    return doc;
+	const doc = await Order.deleteMany({});
+	return doc;
 }
 
-exports.getOrders = async () => {};
+exports.getOrders = async (orderIds) => {
+	let orders = [];
+	for await (id of orderIds) {
+		console.log(id);
+		let order = await Order.findById(id);
+		orders.push(order);
+	}
+	return orders;
+}
+
+exports.getAllOrders = async () => {
+	let orders = await Order.find({});
+	return orders;
+}
