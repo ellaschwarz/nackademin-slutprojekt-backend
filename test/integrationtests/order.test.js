@@ -32,9 +32,13 @@ describe('Integration for Order', function () {
 			},
 		};
 
-		const user = await userModel.signup(person);
-		this.currentTest.user = user;
+		await userModel.signup(person);
+
+		const login = await userModel.login('pepito@mail.com', '12345');
+		this.currentTest.token = login.token;
+		this.currentTest.user = login.user;
 		console.log(this.currentTest.user);
+		console.log(this.currentTest.token);
 	});
 
 	after(async () => {
@@ -53,10 +57,10 @@ describe('Integration for Order', function () {
 
 		await request(app)
 			.post('/api/orders')
-			.set('Content-Type', 'application/json')
+			.set('Authorization', `Bearer ${this.test.token}`)
 			.send(body)
 			.then((res) => {
-				console.log(res);
+				//console.log(res.body);
 			});
 	});
 });
