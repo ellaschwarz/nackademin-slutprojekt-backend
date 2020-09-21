@@ -2,10 +2,8 @@
 const productModel = require("../models/productModel");
 
 exports.createProduct = async (req, res) => {
-    console.log("in controller");
-    const product = await productModel.createProduct();
-    res.send(product);
-
+    const product = await productModel.createProduct(req.body);
+    res.status(201).send(product);
 }
 
 exports.updateProduct = async (req, res) => {

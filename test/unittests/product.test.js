@@ -4,7 +4,7 @@ const { expect, request } = require("chai");
 const Database = require("../../database/database");
 const productModel = require("../../models/productModel");
 
-describe.only("Product Unit tests", () => {
+describe("Product Unit tests", () => {
     before(async function() {
         try {
             await Database.connect();
