@@ -19,13 +19,22 @@ const Product = mongoose.model("Product", productSchema);
     imgFile: 'skateboard-greta.png'
 } */
 
-exports.createProduct = async () => {
-    const product = await Product.create({ title: "test", price: 1, shortDesc: "lorem", longDesc: "lorem Ipsum", imgFile: "blabla " });
-    return product;
+exports.createProduct = async (prod) => {
+    try {
+        const product = await Product.create(prod)
+        return product
+    } catch (error) {
+        console.log(error)
+    }
 }
 
-exports.updateProduct = async () => {
-
+exports.updateProduct = async (id, prod) => {
+    try {
+        const updated = await Product.findByIdAndUpdate(id, prod, { new: true })
+        return updated
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 exports.deleteProduct = async () => {
@@ -40,3 +49,6 @@ exports.getProduct = async () => {
 
 }
 
+exports.clear = async () => {
+    await Product.deleteMany({})
+}
