@@ -54,8 +54,6 @@ exports.signup = async (person) => {
 };
 
 exports.login = async (email, password) => {
-	console.log(email);
-	console.log(password);
 	const doc = await User.findOne({ email: email });
 	if (!doc) return { message: 'Email not found' };
 
