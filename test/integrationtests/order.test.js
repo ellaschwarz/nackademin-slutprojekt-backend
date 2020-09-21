@@ -19,8 +19,6 @@ describe('Integration for Order', function () {
 
 	beforeEach(async function () {
 		await userModel.clear();
-		await orderModel.clear();
-
 	});
 
 	after(async () => {
