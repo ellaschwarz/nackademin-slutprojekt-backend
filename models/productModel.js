@@ -20,50 +20,44 @@ const Product = mongoose.model("Product", productSchema);
 } */
 
 exports.createProduct = async (prod) => {
-    try {
-        const product = await Product.create(prod)
-        return product
-    } catch (error) {
-        console.log(error)
+    const product = await Product.create(prod)
+    if (!product) {
+        throw new Error("could not create product");
     }
+    return product._doc
 }
 
 exports.updateProduct = async (id, prod) => {
-    try {
-        const updated = await Product.findByIdAndUpdate(id, prod, { new: true })
-        return updated
-    } catch (error) {
-        console.log(error)
+    const updated = await Product.findByIdAndUpdate(id, prod, { new: true })
+    if (!updated) {
+        throw new Error("something went wrong");
     }
+    return updated._doc
 }
 
 exports.deleteProduct = async (id) => {
-    try {
-        const deleted = await Product.deleteOne({ _id: id })
-        return deleted
-    } catch (error) {
-        console.log(error)
+    const deleted = await Product.deleteOne({ _id: id })
+    if (!deleted) {
+        throw new Error("something went wrong");
     }
+    return deleted
 }
 
 
 exports.getAllProducts = async () => {
-    try {
-        const products = await Product.find({})
-        return products
-    } catch (error) {
-        console.log(error)
+    const products = await Product.find({})
+    if (!products) {
+        throw new Error("no products found");
     }
+    return products
 }
 
 exports.getProduct = async (id) => {
-    try {
-        const product = await Product.findById(id)
-        return product
-    } catch (error) {
-        console.log(error)
+    const product = await Product.findById(id);
+    if (!product) {
+        throw new Error("not found");
     }
-
+    return product._doc
 }
 
 exports.clear = async () => {

@@ -17,18 +17,18 @@ const userSchema = new mongoose.Schema({
 
 /**
  {
-    _id: '6b521d3f-3d15...' // add server side
-    email: 'johan.kivi@zocom.se',
-    password: '$$$hashed password$$$',
-    name: 'Johan Kivi',
-    role: 'admin', // or customer
+	_id: '6b521d3f-3d15...' // add server side
+	email: 'johan.kivi@zocom.se',
+	password: '$$$hashed password$$$',
+	name: 'Johan Kivi',
+	role: 'admin', // or customer
 
-    adress: {
-        street: 'Tokitokvägen 3',
-        zip: '123 45',
-        city: 'Tokberga'
-    },
-    orderHistory: [ orderId1, orderId2, ... ]
+	adress: {
+		street: 'Tokitokvägen 3',
+		zip: '123 45',
+		city: 'Tokberga'
+	},
+	orderHistory: [ orderId1, orderId2, ... ]
 } 
  */
 
@@ -39,17 +39,17 @@ exports.signup = async (person) => {
 		email: person.email,
 		password: bcrypt.hashSync(person.password, 10),
 		name: person.name,
-		role: 'customer',
+		role: person.role ? person.role : 'customer',
 		adress: {
 			street: person.adress.street,
 			zip: person.adress.zip,
 			city: person.adress.city,
 		},
+		orderHistory: []
 	};
 
 	const userToSave = new User(user);
 	const response = await userToSave.save();
-	//console.log('response', response)
 	return response;
 };
 
@@ -75,9 +75,20 @@ exports.verifyToken = async (token, secret) => {
 	return validToken;
 };
 
-exports.getInfo = async () => {};
+exports.getInfo = async () => { };
 
 exports.clear = async () => {
 	const doc = await User.deleteMany({}, { multi: true });
+	return doc;
+};
+
+exports.updateOrderHistory = async (id, order) => {
+	const doc = await User.findOneAndUpdate({_id: id}, {
+		$push: {
+			orderHistory: order
+		},
+		},
+		{new: true}
+	);
 	return doc;
 };
