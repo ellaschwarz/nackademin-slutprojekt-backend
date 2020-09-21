@@ -5,7 +5,7 @@ const Database = require("../../database/database");
 const productModel = require("../../models/productModel");
 
 describe("Product Unit tests", () => {
-    before(async function() {
+    before(async function () {
         try {
             await Database.connect();
         } catch (error) {
@@ -13,7 +13,7 @@ describe("Product Unit tests", () => {
         }
 
     })
-    beforeEach( async function() {
+    beforeEach(async function () {
         await productModel.clear()
         const prodObj = {
             title: 'Producto',
@@ -36,7 +36,7 @@ describe("Product Unit tests", () => {
     it("should create a product", async function () {
         try {
             expect(this.test.product).to.be.a("object");
-            expect(this.test.product._doc).to.include.all.keys('title', 'price', 'shortDesc', 'longDesc', 'imgFile');
+            expect(this.test.product).to.include.all.keys('title', 'price', 'shortDesc', 'longDesc', 'imgFile');
             expect(this.test.product).to.include({
                 title: 'Producto',
                 price: 300,
@@ -49,13 +49,13 @@ describe("Product Unit tests", () => {
         }
     })
 
-    it('Should update a product', async function() {
+    it('Should update a product', async function () {
         try {
             const newProduct = { title: 'Product updated!' }
             const productUpdated = await productModel.updateProduct(this.test.product._id, newProduct)
 
             expect(productUpdated).to.be.a('object')
-            expect(productUpdated._doc).to.include.all.keys('title', 'price', 'shortDesc', 'longDesc', 'imgFile');
+            expect(productUpdated).to.include.all.keys('title', 'price', 'shortDesc', 'longDesc', 'imgFile');
             expect(productUpdated).to.include({
                 title: 'Product updated!',
                 price: 300,
@@ -68,7 +68,7 @@ describe("Product Unit tests", () => {
         }
     })
 
-    it('Should delete a product', async function() {
+    it('Should delete a product', async function () {
         try {
             const deletedProduct = await productModel.deleteProduct(this.test.product._id)
             expect(deletedProduct.deletedCount).to.equal(1)
@@ -77,21 +77,20 @@ describe("Product Unit tests", () => {
         }
     })
 
-    it('Should get a product', async function() {
+    it('Should get a product', async function () {
         try {
             const product = await productModel.getProduct(this.test.product._id)
 
             expect(product).to.be.a('object')
-            expect(product._doc).to.eql(this.test.product._doc)
-            
+            expect(product).to.eql(this.test.product)
         } catch (error) {
             console.log(error)
         }
     })
 
-    it('Should get all products', async function() {
+    it('Should get all products', async function () {
         try {
-            for( let i=0; i<3; i++) {
+            for (let i = 0; i < 3; i++) {
                 const prod = {
                     title: `Producto ${i}`,
                     price: 300,
