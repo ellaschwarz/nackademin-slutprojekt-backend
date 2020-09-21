@@ -39,7 +39,7 @@ describe('User model', async function () {
 			},
 		};
 
-		const user = await userModel.signup(person);
+        const user = await userModel.signup(person);
 
 		expect(user).to.be.a('object');
 		expect(user._doc).to.include.all.keys([

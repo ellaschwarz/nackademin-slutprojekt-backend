@@ -2,27 +2,55 @@
 const productModel = require("../models/productModel");
 
 exports.createProduct = async (req, res) => {
-    console.log("in controller");
-    const product = await productModel.createProduct();
-    res.send(product);
-
+    try {
+        const product = await productModel.createProduct(req.body);
+        res.status(201).send(product);
+    } catch (error) {
+        res.status(400).send({ message: error.message });
+    }
 }
 
 exports.updateProduct = async (req, res) => {
-    const productId = req.params.productId;
-    //productModel.updateProduct();
+    try {
+        const productId = req.params.productId;
+        const product = await productModel.updateProduct(productId, req.body);
+        res.status(200).json(product);
+    } catch (error) {
+        res.status(400).send({ message: error.message });
+    }
+
 }
 
 exports.deleteProduct = async (req, res) => {
-    const productId = req.params.productId;
-    //productModel.deleteProduct();
+    try {
+        const productId = req.params.productId;
+        const deleted = await productModel.deleteProduct(productId);
+        res.status(200).json(deleted);
+    } catch (error) {
+        res.status(400).send({ message: error.message });
+    }
+
 }
 
 exports.getAllProducts = async (req, res) => {
-    //productModel.getAllProducts();
+    try {
+        const products = await productModel.getAllProducts();
+        res.status(200).json(products)
+    } catch (error) {
+        res.status(404).send({ message: error.message });
+    }
+
 }
 
 exports.getProduct = async (req, res) => {
-    const productId = req.params.productId;
-    //productModel.getProduct()
+    try {
+        const productId = req.params.productId;
+        const product = await productModel.getProduct(productId);
+        res.status(200).json(product)
+    } catch (error) {
+        if (error.message === "not found") {
+            res.status(404).send({ message: error.message });
+        }
+    }
+
 }
