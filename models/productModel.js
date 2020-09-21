@@ -37,15 +37,32 @@ exports.updateProduct = async (id, prod) => {
     }
 }
 
-exports.deleteProduct = async () => {
-
+exports.deleteProduct = async (id) => {
+    try {
+        const deleted = await Product.deleteOne({ _id: id })
+        return deleted
+    } catch (error) {
+        console.log(error)
+    }
 }
+
 
 exports.getAllProducts = async () => {
-
+    try {
+        const products = await Product.find({})
+        return products
+    } catch (error) {
+        console.log(error)
+    }
 }
 
-exports.getProduct = async () => {
+exports.getProduct = async (id) => {
+    try {
+        const product = await Product.findById(id)
+        return product
+    } catch (error) {
+        console.log(error)
+    }
 
 }
 

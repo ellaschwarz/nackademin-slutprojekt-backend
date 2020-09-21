@@ -32,6 +32,7 @@ describe.only("Product Unit tests", () => {
         }
 
     })
+
     it("should create a product", async function () {
         try {
             expect(this.test.product).to.be.a("object");
@@ -47,6 +48,7 @@ describe.only("Product Unit tests", () => {
             console.log(error);
         }
     })
+
     it('Should update a product', async function() {
         try {
             const newProduct = { title: 'Product updated!' }
@@ -63,6 +65,50 @@ describe.only("Product Unit tests", () => {
             })
         } catch (error) {
             console.log(error);
+        }
+    })
+
+    it('Should delete a product', async function() {
+        try {
+            const deletedProduct = await productModel.deleteProduct(this.test.product._id)
+            expect(deletedProduct.deletedCount).to.equal(1)
+        } catch (error) {
+            console.log(error);
+        }
+    })
+
+    it('Should get a product', async function() {
+        try {
+            const product = await productModel.getProduct(this.test.product._id)
+
+            expect(product).to.be.a('object')
+            expect(product._doc).to.eql(this.test.product._doc)
+            
+        } catch (error) {
+            console.log(error)
+        }
+    })
+
+    it('Should get all products', async function() {
+        try {
+            for( let i=0; i<3; i++) {
+                const prod = {
+                    title: `Producto ${i}`,
+                    price: 300,
+                    shortDesc: 'This is a new prod',
+                    longDesc: 'Long description!',
+                    imgFile: 'skateboard-greta.png'
+                }
+                await productModel.createProduct(prod)
+            }
+
+            const products = await productModel.getAllProducts()
+
+            expect(products).to.be.a('array')
+            expect(products.length).to.equal(4)
+
+        } catch (error) {
+            console.log(error)
         }
     })
 
