@@ -1,9 +1,9 @@
 //import Model
 const orderModel = require('../models/orderModel');
+const userModel = require('../models/userModel')
 const auth = require('../middleware/auth')
 
 exports.createOrder = async (req, res, next) => {
-    console.log(req.user)
 
 	//orderModel.createOrder()
     //Check if user is logged in or not 
@@ -14,7 +14,7 @@ exports.createOrder = async (req, res, next) => {
     if(req.user) {
         try {
             const order = await orderModel.createOrder(items, orderValue);
-            //Lägga till order i user 
+            const addOrderToUser = await userModel.updateOrderHistory(req.user.userId, order);
             return res.status(200).json(order);
         } catch (error) {
             return res.status(404).send(error);
@@ -22,7 +22,6 @@ exports.createOrder = async (req, res, next) => {
     } else {
         try {
             const order = await orderModel.createOrder(items, orderValue);
-            //Lägga till order i user 
             return res.status(200).json(order);
         } catch (error) {
             return res.status(404).send(error);

@@ -8,7 +8,7 @@ const app = require('../../app');
 
 const { expect, request } = require('chai');
 
-describe.only('Integration for Order', function () {
+describe('Integration for Order', function () {
 	before(async () => {
 		try {
 			await Database.connect();

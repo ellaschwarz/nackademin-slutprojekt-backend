@@ -45,6 +45,7 @@ exports.signup = async (person) => {
 			zip: person.adress.zip,
 			city: person.adress.city,
 		},
+		orderHistory: []
 	};
 
 	const userToSave = new User(user);
@@ -80,4 +81,18 @@ exports.getInfo = async () => {};
 exports.clear = async () => {
 	const doc = await User.deleteMany({}, { multi: true });
 	return doc;
+};
+
+exports.updateOrderHistory = async (id, order) => {
+	const doc = await User.findOneAndUpdate({_id: id}, {
+		$push: {
+			orderHistory: order
+		},
+		},
+		{new: true}
+	);
+	console.log('is this order history')
+	console.log(doc);
+	return doc._doc
+
 };
