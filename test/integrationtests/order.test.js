@@ -19,11 +19,8 @@ describe('Integration for Order', function () {
 
 	beforeEach(async function () {
 		await userModel.clear();
-		//await orderModel.clear();
+		await orderModel.clear();
 
-        
-		// console.log(this.currentTest.user);
-		// console.log(this.currentTest.token);
 	});
 
 	after(async () => {
@@ -54,15 +51,16 @@ describe('Integration for Order', function () {
 
 		await userModel.signup(person);
         const login = await userModel.login('pepito@mail.com', '12345');
-        
 
 		await request(app)
 			.post('/api/orders')
 			.set('Authorization', 'Bearer ' + login.token)
 			.send(body)
 			.then((res) => {
-                console.log(res.body)
-				//console.log(res.body);
+				console.log(res.body)
+				expect(res.body).to.be.an('object');
+				expect(res.body).to.have.status('inProcess');
+				expect(res.body._id).to.be.a('string');
 			});
     });
     
@@ -77,7 +75,9 @@ describe('Integration for Order', function () {
 			.set('Content-Type', 'application/json')
 			.send(body)
 			.then((res) => {
-				//console.log(res.body);
+				expect(res.body).to.be.an('object');
+				expect(res.body).to.have.status('inProcess');
+				expect(res.body._id).to.be.a('string');
 			});
 	});
 });

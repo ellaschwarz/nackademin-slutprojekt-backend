@@ -50,7 +50,6 @@ exports.signup = async (person) => {
 
 	const userToSave = new User(user);
 	const response = await userToSave.save();
-	//console.log('response', response)
 	return response;
 };
 
@@ -91,8 +90,5 @@ exports.updateOrderHistory = async (id, order) => {
 		},
 		{new: true}
 	);
-	console.log('is this order history')
-	console.log(doc);
-	return doc._doc
-
+	return doc;
 };

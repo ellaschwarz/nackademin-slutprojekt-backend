@@ -57,16 +57,15 @@ describe("Testing order models", () => {
 
 		const user = await userModel.signup(person);
         const newOrder = await orderModel.createOrder(order);
-		const updateUser = await userModel.updateOrderHistory(user._id, newOrder._id);
+		await userModel.updateOrderHistory(user._id, newOrder._id);
        
         
         const newOrder2 = await orderModel.createOrder(order2);
-        const updateUser2 = await userModel.updateOrderHistory(user._id, newOrder2._id);
+        const updateUser = await userModel.updateOrderHistory(user._id, newOrder2._id);
 
         expect(newOrder).to.be.an('object')
-        expect(updateUser2.orderHistory).to.have.lengthOf(2);
-        expect(updateUser2.orderHistory).to.include(newOrder._id, newOrder2._id);
-        //expect(newOrder.orderValue).to.be.equal(order.orderValue);
-
+        expect(newOrder._doc).to.have.keys('items', '_id', 'timestamp', 'status', 'orderValue', '__v')
+        expect(updateUser.orderHistory).to.have.lengthOf(2);
+        expect(updateUser.orderHistory).to.include(newOrder._id, newOrder2._id);
 	});
 })
