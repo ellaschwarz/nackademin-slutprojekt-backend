@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const orderModel = require("../models/orderModel");
 
 const userSchema = new mongoose.Schema({
 	email: String,
@@ -15,23 +14,6 @@ const userSchema = new mongoose.Schema({
 	},
 	orderHistory: Array,
 });
-
-/**
- {
-	_id: '6b521d3f-3d15...' // add server side
-	email: 'johan.kivi@zocom.se',
-	password: '$$$hashed password$$$',
-	name: 'Johan Kivi',
-	role: 'admin', // or customer
-
-	adress: {
-		street: 'Tokitokvägen 3',
-		zip: '123 45',
-		city: 'Tokberga'
-	},
-	orderHistory: [ orderId1, orderId2, ... ]
-} 
- */
 
 const User = mongoose.model('User', userSchema);
 
@@ -48,7 +30,7 @@ exports.signup = async (person) => {
 			zip: person.adress.zip,
 			city: person.adress.city,
 		},
-		orderHistory: []
+		orderHistory: [],
 	};
 
 	const userToSave = new User(user);
@@ -91,11 +73,13 @@ exports.clear = async () => {
 
 //Hittar en användare som lagt en order. Lägger sedan till ordern i användarens orderhistorik
 exports.updateOrderHistory = async (id, order) => {
-	const doc = await User.findOneAndUpdate({ _id: id }, {
-		$push: {
-			orderHistory: order
+	const doc = await User.findOneAndUpdate(
+		{ _id: id },
+		{
+			$push: {
+				orderHistory: order,
+			},
 		},
-	},
 		{ new: true }
 	);
 	return doc;

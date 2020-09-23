@@ -4,7 +4,7 @@ const orderSchema = new mongoose.Schema({
 	timestamp: Date,
 	status: String,
 	items: Array,
-	orderValue: Number
+	orderValue: Number,
 });
 
 const Order = mongoose.model('Order', orderSchema);
@@ -15,7 +15,7 @@ exports.createOrder = async (order) => {
 		timestamp: new Date(),
 		status: 'inProcess',
 		items: order.items,
-		orderValue: order.orderValue
+		orderValue: order.orderValue,
 	});
 	return doc;
 };
@@ -24,7 +24,7 @@ exports.createOrder = async (order) => {
 exports.clear = async () => {
 	const doc = await Order.deleteMany({});
 	return doc;
-}
+};
 
 //Hämtar en order med order-id
 exports.getOrders = async (orderIds) => {
@@ -35,10 +35,10 @@ exports.getOrders = async (orderIds) => {
 		orders.push(order);
 	}
 	return orders;
-}
+};
 
 //Hämtar alla ordrar
 exports.getAllOrders = async () => {
 	let orders = await Order.find({});
 	return orders;
-}
+};
