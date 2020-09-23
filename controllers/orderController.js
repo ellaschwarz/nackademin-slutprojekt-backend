@@ -4,19 +4,20 @@ const userModel = require('../models/userModel');
 const auth = require('../middleware/auth');
 
 exports.createOrder = async (req, res) => {
+	//Kollar om en användare har loggat in, om så är fallet skapas en order
+	//som läggs till i orderHistory i användarens objekt
 	if (req.user) {
 		try {
-			console.log('entering in auth');
 			const order = await orderModel.createOrder(req.body);
 			await userModel.updateOrderHistory(req.user.userId, order);
 			return res.status(200).json(order);
 		} catch (error) {
 			return res.status(404).send(error);
 		}
+		//Om det inte finns en inloggad användare så skapas bara en order
 	} else {
 		try {
 			const order = await orderModel.createOrder(req.body);
-			console.log('entering in anon');
 			return res.status(200).json(order);
 		} catch (error) {
 			return res.status(404).send(error);
