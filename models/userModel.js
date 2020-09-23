@@ -35,6 +35,8 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
+// Registrerar en ny användare
+// Hashar password innan den sparas i DB
 exports.signup = async (person) => {
 	const user = {
 		email: person.email,
@@ -54,6 +56,9 @@ exports.signup = async (person) => {
 	return response;
 };
 
+// Jämför om användaren finns
+// Jämför lösenord
+// Skickar tillbacka en JWT samt user info om allt stämmer
 exports.login = async (email, password) => {
 	const doc = await User.findOne({ email: email });
 	if (!doc) return { message: 'Email not found' };
@@ -71,20 +76,20 @@ exports.login = async (email, password) => {
 	return { token: token, user: doc };
 };
 
+// Returnerar info som finns i token
 exports.verifyToken = async (token, secret) => {
 	const validToken = await jwt.verify(token, secret);
 	return validToken;
 };
 
-exports.getInfo = async () => {
-
-};
-
+// Rensar user collection.
+// Used on tests
 exports.clear = async () => {
 	const doc = await User.deleteMany({}, { multi: true });
 	return doc;
 };
 
+// Updaterar Order History om användare är 'Customer'
 exports.updateOrderHistory = async (id, order) => {
 	const doc = await User.findOneAndUpdate({ _id: id }, {
 		$push: {
@@ -96,7 +101,7 @@ exports.updateOrderHistory = async (id, order) => {
 	return doc;
 };
 
-
+// Returnerar order history
 exports.getOrderHistory = async (id) => {
 	console.log(id);
 	const user = await User.findById(id);
