@@ -89,7 +89,11 @@ exports.clear = async () => {
 	return doc;
 };
 
+<<<<<<< HEAD
 // Updaterar Order History om användare är 'Customer'
+=======
+//Hittar en användare som lagt en order. Lägger sedan till ordern i användarens orderhistorik
+>>>>>>> 32f861668fd4eb47bd9e6c28f3255a56500e1e0c
 exports.updateOrderHistory = async (id, order) => {
 	const doc = await User.findOneAndUpdate({ _id: id }, {
 		$push: {

@@ -8,14 +8,8 @@ const orderSchema = new mongoose.Schema({
 });
 
 const Order = mongoose.model('Order', orderSchema);
-/* {
-	_id: 123,
-	timeStamp: Date.now(),
-	status: 'inProcess',
-	items: [ <productId1>, <productId2>, ... ],
-	orderValue: 999
-}  */
 
+//Skapar en order
 exports.createOrder = async (order) => {
 	const doc = await Order.create({
 		timestamp: new Date(),
@@ -26,11 +20,13 @@ exports.createOrder = async (order) => {
 	return doc;
 };
 
+//Rensar alla ordrar i databasen
 exports.clear = async () => {
 	const doc = await Order.deleteMany({});
 	return doc;
 }
 
+//Hämtar en order med order-id
 exports.getOrders = async (orderIds) => {
 	let orders = [];
 	for await (id of orderIds) {
@@ -41,6 +37,7 @@ exports.getOrders = async (orderIds) => {
 	return orders;
 }
 
+//Hämtar alla ordrar
 exports.getAllOrders = async () => {
 	let orders = await Order.find({});
 	return orders;
