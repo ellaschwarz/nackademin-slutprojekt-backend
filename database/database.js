@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const productModel = require("../models/productModel");
+const productModel = require('../models/productModel');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 require('dotenv').config();
 

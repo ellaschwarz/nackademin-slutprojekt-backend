@@ -1,6 +1,7 @@
 //import Model
 const userModel = require('../models/userModel');
 
+//Hanterar requests från klienten, skapar en användare och loggar in användaren, returnerar token + användaruppgifter.
 exports.signup = async (req, res) => {
 	const userToCreate = {
 		email: req.body.email,
@@ -24,6 +25,7 @@ exports.signup = async (req, res) => {
 	}
 };
 
+//Hanterar requests från klienten, kallar på login modellen, returnerar token + användaruppgifter.
 exports.login = async (req, res) => {
 	const { email, password } = req.body;
 	try {
