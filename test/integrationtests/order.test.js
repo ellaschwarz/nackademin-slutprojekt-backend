@@ -65,6 +65,7 @@ describe('Integration for Order', function () {
 	});
 
 	it('POST /api/orders should create a order with anonymous user', async function () {
+
 		const body = {
 			items: [3, 5, 1],
 			orderValue: 399,

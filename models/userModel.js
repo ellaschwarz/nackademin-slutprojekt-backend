@@ -85,6 +85,7 @@ exports.clear = async () => {
 	return doc;
 };
 
+//Hittar en användare som lagt en order. Lägger sedan till ordern i användarens orderhistorik
 exports.updateOrderHistory = async (id, order) => {
 	const doc = await User.findOneAndUpdate({ _id: id }, {
 		$push: {
