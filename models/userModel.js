@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const orderModel = require('../models/orderModel');
+const orderModel = require("../models/orderModel");
 
 const userSchema = new mongoose.Schema({
 	email: String,
@@ -48,7 +48,7 @@ exports.signup = async (person) => {
 			zip: person.adress.zip,
 			city: person.adress.city,
 		},
-		orderHistory: [],
+		orderHistory: []
 	};
 
 	const userToSave = new User(user);
@@ -82,40 +82,26 @@ exports.verifyToken = async (token, secret) => {
 	return validToken;
 };
 
-<<<<<<< HEAD
 // Rensar user collection.
 // Used on tests
-=======
-exports.getInfo = async () => {};
-
->>>>>>> 99f01932d851a5ae02aa3709b488860e0f8a1ab5
 exports.clear = async () => {
 	const doc = await User.deleteMany({}, { multi: true });
 	return doc;
 };
 
-<<<<<<< HEAD
-// Updaterar Order History om användare är 'Customer'
-=======
 //Hittar en användare som lagt en order. Lägger sedan till ordern i användarens orderhistorik
->>>>>>> 32f861668fd4eb47bd9e6c28f3255a56500e1e0c
 exports.updateOrderHistory = async (id, order) => {
-	const doc = await User.findOneAndUpdate(
-		{ _id: id },
-		{
-			$push: {
-				orderHistory: order,
-			},
+	const doc = await User.findOneAndUpdate({ _id: id }, {
+		$push: {
+			orderHistory: order
 		},
+	},
 		{ new: true }
 	);
 	return doc;
 };
 
-<<<<<<< HEAD
 // Returnerar order history
-=======
->>>>>>> 99f01932d851a5ae02aa3709b488860e0f8a1ab5
 exports.getOrderHistory = async (id) => {
 	console.log(id);
 	const user = await User.findById(id);
