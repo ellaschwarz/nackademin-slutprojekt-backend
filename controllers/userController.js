@@ -37,6 +37,7 @@ exports.login = async (req, res) => {
 	}
 };
 
+
 exports.getInfo = async (req, res) => {
 	//userModel.getInfo()
 };
