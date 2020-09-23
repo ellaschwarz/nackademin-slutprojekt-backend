@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const products = require("../database/products.json");
 
+//productschema enligt anvisningarna. 
 const productSchema = new mongoose.Schema({
     title: String,
     price: Number,
@@ -8,8 +9,6 @@ const productSchema = new mongoose.Schema({
     longDesc: String,
     imgFile: String
 })
-
-const Product = mongoose.model("Product", productSchema);
 
 /*{
     _id: '39y7gbbZk1u4ABnv',
@@ -20,12 +19,16 @@ const Product = mongoose.model("Product", productSchema);
     imgFile: 'skateboard-greta.png'
 } */
 
+const Product = mongoose.model("Product", productSchema);
+
+//laddar in alle produkter från product.json i databasen. kommenteras ut i database.js vid användning av ny databas
 exports.init = async () => {
     products.forEach(async product => {
         await Product.create(product);
     })
 }
 
+//tar emot ett product object och sparar den i databasen. 
 exports.createProduct = async (prod) => {
     const product = await Product.create(prod)
     if (!product) {
@@ -34,6 +37,7 @@ exports.createProduct = async (prod) => {
     return product._doc
 }
 
+//tar emot id på produkten som ska uppdateras samt nya objektet, produkten uppdateras i databasen.
 exports.updateProduct = async (id, prod) => {
     const updated = await Product.findByIdAndUpdate(id, prod, { new: true })
     if (!updated) {
@@ -42,6 +46,7 @@ exports.updateProduct = async (id, prod) => {
     return updated._doc
 }
 
+//tar bort produkten med ID 
 exports.deleteProduct = async (id) => {
     const deleted = await Product.deleteOne({ _id: id })
     if (!deleted) {
@@ -50,7 +55,7 @@ exports.deleteProduct = async (id) => {
     return deleted
 }
 
-
+//hämtar alla produkter från databasen
 exports.getAllProducts = async () => {
     const products = await Product.find({})
     if (!products) {
@@ -59,6 +64,7 @@ exports.getAllProducts = async () => {
     return products
 }
 
+//hämtar en specific produkt från databasen enligt ID 
 exports.getProduct = async (id) => {
     const product = await Product.findById(id);
     if (!product) {
@@ -67,6 +73,7 @@ exports.getProduct = async (id) => {
     return product._doc
 }
 
+//tömmer databasen, används för testerna. 
 exports.clear = async () => {
     await Product.deleteMany({})
 }
